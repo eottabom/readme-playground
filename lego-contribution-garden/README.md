@@ -19,14 +19,12 @@ GitHub 잔디를 **레고 미니피규어가 직접 가꾸는 정원**으로 만
 본인 레포에 `.github/workflows/lego-garden.yml` 파일을 생성하고 아래 내용을 복사합니다:
 
 ```yaml
-name: Generate LEGO Garden
+name: 🍀 Generate LEGO Contribution Garden
 
 on:
   schedule:
-    - cron: "0 */6 * * *" # 6시간마다 자동 업데이트
-  workflow_dispatch:       # Actions 탭에서 수동 실행 가능
-  push:
-    branches: [main]
+    - cron: "0 0 * * *"  # 매일 자동 업데이트
+  workflow_dispatch:      # Actions 탭에서 수동 실행 가능
 
 permissions:
   contents: write
@@ -37,23 +35,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - uses: eottabom/readme-playground/lego-contribution-garden@v1.0.0
         with:
-          node-version: "20"
-
-      - run: npm ci
-      - run: npm run build
-
-      - name: Generate LEGO Garden
-        env:
-          # 자동으로 본인 계정으로 설정됩니다
-          GITHUB_USERNAME: ${{ github.repository_owner }}
-        run: node dist/index.js
+          github_username: ${{ github.repository_owner }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "LEGO Garden Bot"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add output/
           if git diff --staged --quiet; then
             echo "No changes to commit"
@@ -67,8 +57,8 @@ jobs:
 
 ### Step 2. 워크플로우 실행
 
-- **자동**: `main` 브랜치에 push하면 자동 실행됩니다
-- **수동**: `Actions` 탭 > `Generate LEGO Garden` > `Run workflow` 클릭
+- **수동**: `Actions` 탭 > `Generate LEGO Contribution Garden` > `Run workflow` 클릭
+- **자동**: 매일 UTC 00:00에 자동 실행됩니다
 
 실행이 완료되면 `output/lego-garden.svg` 파일이 생성(커밋)됩니다.
 
@@ -80,7 +70,7 @@ jobs:
 ![LEGO Garden](output/lego-garden.svg)
 ```
 
-끝입니다! 6시간마다 자동으로 업데이트됩니다.
+끝입니다! 매일 자동으로 업데이트됩니다.
 
 ---
 
@@ -108,31 +98,31 @@ jobs:
 
 ### 색상 변경
 
-워크플로우의 `env`에 원하는 색상을 추가하면 됩니다:
+워크플로우의 `with`에 원하는 옵션을 추가하면 됩니다:
 
 ```yaml
-- name: Generate LEGO Garden
-  env:
-    GITHUB_USERNAME: ${{ github.repository_owner }}
-    LEGO_COLOR: "#FF6B6B"    # 레고 몸통 색상 (기본: #FFD700 골드)
-    WATER_COLOR: "#a29bfe"   # 물방울 색상 (기본: #56c4f5 하늘색)
-    BG_COLOR: "#f8f9fa"      # 배경 색상 (기본: #ffffff 흰색)
-    GARDEN_WEEKS: "30"       # 정원에 표시할 주 수 (기본: 20, 범위: 4~52)
-    OUTPUT_DIR: "assets"     # 출력 디렉토리 (기본: 루트)
-    OUTPUT_FILE: "my-garden.svg"  # 출력 파일명 (기본: lego-garden.svg)
-  run: node dist/index.js
+- uses: eottabom/readme-playground/lego-contribution-garden@v1.0.0
+  with:
+    github_username: ${{ github.repository_owner }}
+    github_token: ${{ secrets.GITHUB_TOKEN }}
+    lego_color: "#FF6B6B"          # 레고 몸통 색상 (기본: #FFD700 골드)
+    water_color: "#a29bfe"         # 물방울 색상 (기본: #56c4f5 하늘색)
+    bg_color: "#f8f9fa"            # 배경 색상 (기본: #ffffff 흰색)
+    garden_weeks: "30"             # 정원에 표시할 주 수 (기본: 20, 범위: 4~52)
+    output_dir: "assets"           # 출력 디렉토리 (기본: output)
+    output_file: "my-garden.svg"   # 출력 파일명 (기본: lego-garden.svg)
 ```
 
-| 환경 변수 | 설명 | 기본값 |
-|-----------|------|--------|
-| `GITHUB_USERNAME` | GitHub 사용자명 | `${{ github.repository_owner }}` (자동) |
-| `GITHUB_TOKEN` | GitHub 토큰 (선택) | - |
-| `LEGO_COLOR` | 레고 몸통 색상 | `#FFD700` |
-| `WATER_COLOR` | 물방울 색상 | `#56c4f5` |
-| `BG_COLOR` | 배경 색상 | `#ffffff` |
-| `GARDEN_WEEKS` | 정원에 표시할 주 수 (4~52) | `20` |
-| `OUTPUT_DIR` | 출력 디렉토리 (자동 생성) | `output` |
-| `OUTPUT_FILE` | 출력 파일명 | `lego-garden.svg` |
+| 옵션 | 설명 | 기본값 |
+|------|------|--------|
+| `github_username` | GitHub 사용자명 | `${{ github.repository_owner }}` (자동) |
+| `github_token` | GitHub 토큰 (선택) | - |
+| `lego_color` | 레고 몸통 색상 | `#FFD700` |
+| `water_color` | 물방울 색상 | `#56c4f5` |
+| `bg_color` | 배경 색상 | `#ffffff` |
+| `garden_weeks` | 정원에 표시할 주 수 (4~52) | `20` |
+| `output_dir` | 출력 디렉토리 (자동 생성) | `output` |
+| `output_file` | 출력 파일명 | `lego-garden.svg` |
 
 ### GitHub Token (선택)
 
@@ -141,12 +131,10 @@ jobs:
 1. [Personal Access Token](https://github.com/settings/tokens/new) 생성 (`read:user` 스코프)
 2. 레포 `Settings` > `Secrets and variables` > `Actions` > `New repository secret`
 3. Name: `GH_TOKEN`, Value: 생성한 토큰
-4. 워크플로우 env에 한 줄 추가:
+4. 워크플로우 `with`에 추가:
 
 ```yaml
-env:
-  GITHUB_USERNAME: ${{ github.repository_owner }}
-  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+github_token: ${{ secrets.GH_TOKEN }}
 ```
 
 ---
