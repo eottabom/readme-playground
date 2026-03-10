@@ -1,0 +1,72 @@
+name: "LEGO Contribution Garden"
+description: "A LEGO minifigure plants seeds, waters, and grows your GitHub contribution garden! Dynamic grass height based on activity."
+author: "lego-garden"
+
+branding:
+  icon: "sun"
+  color: "green"
+
+inputs:
+  github_username:
+    description: "GitHub username to fetch contributions for"
+    required: true
+  github_token:
+    description: "GitHub token (optional, for more accurate contribution counts). Works without it!"
+    required: false
+    default: ""
+  output_dir:
+    description: "Output directory (created automatically if it doesn't exist)"
+    required: false
+    default: "output"
+  output_file:
+    description: "Output SVG file name"
+    required: false
+    default: "lego-garden.svg"
+  lego_color:
+    description: "LEGO minifigure body color (hex)"
+    required: false
+    default: "#FFD700"
+  water_color:
+    description: "Water drops color (hex)"
+    required: false
+    default: "#56c4f5"
+  bg_color:
+    description: "Background color (hex)"
+    required: false
+    default: "#ffffff"
+  garden_weeks:
+    description: "Number of weeks to display in the garden (4-52)"
+    required: false
+    default: "20"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "20"
+
+    - name: Install dependencies
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npm ci
+
+    - name: Build
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npm run build
+
+    - name: Generate SVG
+      shell: bash
+      working-directory: ${{ github.workspace }}
+      env:
+        GITHUB_USERNAME: ${{ inputs.github_username }}
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+        OUTPUT_DIR: ${{ inputs.output_dir }}
+        OUTPUT_FILE: ${{ inputs.output_file }}
+        LEGO_COLOR: ${{ inputs.lego_color }}
+        WATER_COLOR: ${{ inputs.water_color }}
+        BG_COLOR: ${{ inputs.bg_color }}
+        GARDEN_WEEKS: ${{ inputs.garden_weeks }}
+      run: node ${{ github.action_path }}/dist/index.js

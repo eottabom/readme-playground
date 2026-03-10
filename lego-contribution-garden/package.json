@@ -1,0 +1,29 @@
+{
+  "name": "lego-contribution-garden",
+  "version": "1.0.0",
+  "description": "🌱 A LEGO minifigure waters your GitHub contribution garden! Dynamic grass that grows based on your activity.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "generate:preview": "ts-node src/preview.ts"
+  },
+  "keywords": [
+    "github",
+    "readme",
+    "contribution-graph",
+    "lego",
+    "github-action",
+    "svg",
+    "garden"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^25.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

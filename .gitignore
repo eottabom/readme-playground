@@ -1,0 +1,14 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Dependencies
+node_modules/
+
+# Build
+dist/
+
+# OS
+.DS_Store
+Thumbs.db
