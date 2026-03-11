@@ -1,8 +1,9 @@
 import { ContributionWeek } from "../contributions";
 import {
   getGardenWeeks, CELL_SIZE, CELL_GAP, COL_W,
-  WALK_DURATION, GROW_TIME,
+  WALK_DURATION, GROW_TIME, FULL_CYCLE,
   getGrassHeight, arriveTime, adjustBrightness, prand, trapezoidPath,
+  extAnim, extAnimSpline,
 } from "./constants";
 
 export function gardenOffsetX(totalWidth: number): number {
@@ -76,22 +77,20 @@ export function generateSeedScatter(
         <g>
           <ellipse cx="${handX}" cy="${handY}" rx="2" ry="2.8" fill="#8B6914" opacity="0"
                    transform="rotate(30,${handX},${handY})">
-            <animate attributeName="opacity" values="0;0.9;0.9;0" keyTimes="0;0.1;0.8;1" dur="0.5s" begin="cycle.begin+${st}s" fill="freeze"/>
-            <animate attributeName="cx" values="${handX};${midX};${tx}" dur="0.4s" begin="cycle.begin+${st}s" fill="freeze"
-                     calcMode="spline" keySplines="0.3 0 0.7 1;0.3 0 0.7 1"/>
-            <animate attributeName="cy" values="${handY};${midY};${ty}" dur="0.4s" begin="cycle.begin+${st}s" fill="freeze"
-                     calcMode="spline" keySplines="0.1 0 0.5 1;0.5 0 1 1"/>
+            <animate attributeName="opacity" ${extAnim(st, 0.5, ["0", "0.9", "0.9", "0"], [0, 0.1, 0.8, 1])}/>
+            <animate attributeName="cx" ${extAnimSpline(st, 0.4, [`${handX}`, `${midX}`, `${tx}`], ["0.3 0 0.7 1", "0.3 0 0.7 1"])}/>
+            <animate attributeName="cy" ${extAnimSpline(st, 0.4, [`${handY}`, `${midY}`, `${ty}`], ["0.1 0 0.5 1", "0.5 0 1 1"])}/>
           </ellipse>
           <circle cx="${tx - 3}" cy="${ty + 2}" r="1.5" fill="#8B7355" opacity="0">
-            <animate attributeName="opacity" values="0;0.5;0" dur="0.3s" begin="cycle.begin+${st + 0.35}s" fill="freeze"/>
-            <animate attributeName="cy" values="${ty + 2};${ty - 3}" dur="0.3s" begin="cycle.begin+${st + 0.35}s" fill="freeze"/>
+            <animate attributeName="opacity" ${extAnim(st + 0.35, 0.3, ["0", "0.5", "0"])}/>
+            <animate attributeName="cy" ${extAnim(st + 0.35, 0.3, [`${ty + 2}`, `${ty - 3}`])}/>
           </circle>
           <circle cx="${tx + 3}" cy="${ty + 2}" r="1.2" fill="#8B7355" opacity="0">
-            <animate attributeName="opacity" values="0;0.4;0" dur="0.25s" begin="cycle.begin+${st + 0.37}s" fill="freeze"/>
-            <animate attributeName="cy" values="${ty + 2};${ty - 4}" dur="0.25s" begin="cycle.begin+${st + 0.37}s" fill="freeze"/>
+            <animate attributeName="opacity" ${extAnim(st + 0.37, 0.25, ["0", "0.4", "0"])}/>
+            <animate attributeName="cy" ${extAnim(st + 0.37, 0.25, [`${ty + 2}`, `${ty - 4}`])}/>
           </circle>
           <circle cx="${tx}" cy="${ty}" r="1.5" fill="#6B5310" opacity="0">
-            <animate attributeName="opacity" values="0;0.6;0.6;0" keyTimes="0;0.3;0.7;1" dur="1s" begin="cycle.begin+${st + 0.35}s" fill="freeze"/>
+            <animate attributeName="opacity" ${extAnim(st + 0.35, 1, ["0", "0.6", "0.6", "0"], [0, 0.3, 0.7, 1])}/>
           </circle>
         </g>
       `);
@@ -132,18 +131,17 @@ export function generateWatering(
         const delay = wt + i * 0.04;
         el.push(`
           <circle cx="${spoutX}" cy="${spoutY}" r="1.5" fill="${waterColor}" opacity="0">
-            <animate attributeName="opacity" values="0;0.7;0.3;0" dur="0.4s" begin="cycle.begin+${delay}s" fill="freeze"/>
-            <animate attributeName="cx" values="${spoutX};${(spoutX + dx) / 2};${dx}" dur="0.35s" begin="cycle.begin+${delay}s" fill="freeze"/>
-            <animate attributeName="cy" values="${spoutY};${Math.min(spoutY, ty) - 8};${ty}" dur="0.35s" begin="cycle.begin+${delay}s" fill="freeze"
-                     calcMode="spline" keySplines="0.1 0 0.5 1;0.5 0 1 1"/>
+            <animate attributeName="opacity" ${extAnim(delay, 0.4, ["0", "0.7", "0.3", "0"])}/>
+            <animate attributeName="cx" ${extAnim(delay, 0.35, [`${spoutX}`, `${(spoutX + dx) / 2}`, `${dx}`])}/>
+            <animate attributeName="cy" ${extAnimSpline(delay, 0.35, [`${spoutY}`, `${Math.min(spoutY, ty) - 8}`, `${ty}`], ["0.1 0 0.5 1", "0.5 0 1 1"])}/>
           </circle>
         `);
       }
 
       el.push(`
         <circle cx="${tx}" cy="${ty}" r="0" fill="none" stroke="${waterColor}" stroke-width="0.6" opacity="0">
-          <animate attributeName="opacity" values="0;0.3;0" dur="0.45s" begin="cycle.begin+${wt + 0.25}s" fill="freeze"/>
-          <animate attributeName="r" values="0;7" dur="0.45s" begin="cycle.begin+${wt + 0.25}s" fill="freeze"/>
+          <animate attributeName="opacity" ${extAnim(wt + 0.25, 0.45, ["0", "0.3", "0"])}/>
+          <animate attributeName="r" ${extAnim(wt + 0.25, 0.45, ["0", "7"])}/>
         </circle>
       `);
     }
@@ -176,7 +174,7 @@ export function generateGrowth(
       el.push(`
         <path d="${trapezoidPath(x, y, CELL_SIZE, CELL_SIZE, 1.5)}"
               fill="${cellColor}" opacity="0">
-          <animate attributeName="opacity" values="0;${cellOpacity}" dur="0.4s" begin="cycle.begin+${t}s" fill="freeze"/>
+          <animate attributeName="opacity" ${extAnim(t, 0.4, ["0", cellOpacity])}/>
           <title>${day.date}: ${day.count} contributions</title>
         </path>
       `);
@@ -193,15 +191,15 @@ export function generateGrowth(
       const sproutT = t + 0.1;
       el.push(`
         <g opacity="0">
-          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.4;1" dur="${GROW_TIME + 0.3}s" begin="cycle.begin+${sproutT}s" fill="freeze"/>
+          <animate attributeName="opacity" ${extAnim(sproutT, GROW_TIME + 0.3, ["0", "1", "1", "0"], [0, 0.1, 0.4, 1])}/>
           <line x1="${cx}" y1="${y}" x2="${cx}" y2="${y}" stroke="#7dc97d" stroke-width="1.5" stroke-linecap="round">
-            <animate attributeName="y2" values="${y};${y - 5}" dur="0.3s" begin="cycle.begin+${sproutT}s" fill="freeze"/>
+            <animate attributeName="y2" ${extAnim(sproutT, 0.3, [`${y}`, `${y - 5}`])}/>
           </line>
           <ellipse cx="${cx - 2}" cy="${y - 5}" rx="2" ry="1.5" fill="#9be9a8" opacity="0">
-            <animate attributeName="opacity" values="0;0.8" dur="0.2s" begin="cycle.begin+${sproutT + 0.15}s" fill="freeze"/>
+            <animate attributeName="opacity" ${extAnim(sproutT + 0.15, 0.2, ["0", "0.8"])}/>
           </ellipse>
           <ellipse cx="${cx + 2}" cy="${y - 5}" rx="2" ry="1.5" fill="#9be9a8" opacity="0">
-            <animate attributeName="opacity" values="0;0.8" dur="0.2s" begin="cycle.begin+${sproutT + 0.2}s" fill="freeze"/>
+            <animate attributeName="opacity" ${extAnim(sproutT + 0.2, 0.2, ["0", "0.8"])}/>
           </ellipse>
         </g>
       `);
@@ -220,9 +218,8 @@ export function generateGrowth(
         el.push(`
           <line x1="${bx}" y1="${y}" x2="${bx}" y2="${y}"
                 stroke="${bladeColor}" stroke-width="${1.8 + prand(seed, i + 30) * 1.2}" stroke-linecap="round" opacity="0">
-            <animate attributeName="opacity" values="0;0.85" dur="0.1s" begin="cycle.begin+${bt}s" fill="freeze"/>
-            <animate attributeName="y2" values="${y};${y - bh}" dur="${GROW_TIME}s" begin="cycle.begin+${bt}s" fill="freeze"
-                     calcMode="spline" keySplines="0.05 0.9 0.25 1"/>
+            <animate attributeName="opacity" ${extAnim(bt, 0.1, ["0", "0.85"])}/>
+            <animate attributeName="y2" ${extAnimSpline(bt, GROW_TIME, [`${y}`, `${y - bh}`], ["0.05 0.9 0.25 1"])}/>
             <animate attributeName="x2"
                      values="${bx};${bx + sway};${bx}"
                      dur="${1.6 + prand(seed, i + 20) * 1.5}s" begin="cycle.begin+${swayStart}s" repeatCount="indefinite"/>
@@ -234,10 +231,12 @@ export function generateGrowth(
           el.push(`
             <path d="M ${bx},${y} Q ${bx + sway * 0.5},${y} ${bx},${y}" stroke="none"
                   fill="${bladeColor}" opacity="0">
-              <animate attributeName="opacity" values="0;0.6" dur="0.25s" begin="cycle.begin+${lt}s" fill="freeze"/>
+              <animate attributeName="opacity" ${extAnim(lt, 0.25, ["0", "0.6"])}/>
               <animate attributeName="d"
-                       values="M ${bx},${y - bh + 3} Q ${bx + sway * 0.3},${y - bh + 2} ${bx},${y - bh + 3};M ${bx - 3},${y - bh + 1} Q ${bx + sway * 0.5},${y - bh - 2} ${bx + 3},${y - bh + 1}"
-                       dur="0.4s" begin="cycle.begin+${lt}s" fill="freeze"/>
+                       ${extAnim(lt, 0.4, [
+                         `M ${bx},${y - bh + 3} Q ${bx + sway * 0.3},${y - bh + 2} ${bx},${y - bh + 3}`,
+                         `M ${bx - 3},${y - bh + 1} Q ${bx + sway * 0.5},${y - bh - 2} ${bx + 3},${y - bh + 1}`
+                       ])}/>
             </path>
           `);
         }
@@ -247,9 +246,9 @@ export function generateGrowth(
         const bushT = grassT + GROW_TIME * 0.3;
         el.push(`
           <ellipse cx="${cx}" cy="${y - 2}" rx="0" ry="0" fill="${color}" opacity="0">
-            <animate attributeName="opacity" values="0;0.3" dur="0.3s" begin="cycle.begin+${bushT}s" fill="freeze"/>
-            <animate attributeName="rx" values="0;${CELL_SIZE / 2 + 1}" dur="0.5s" begin="cycle.begin+${bushT}s" fill="freeze"/>
-            <animate attributeName="ry" values="0;4" dur="0.5s" begin="cycle.begin+${bushT}s" fill="freeze"/>
+            <animate attributeName="opacity" ${extAnim(bushT, 0.3, ["0", "0.3"])}/>
+            <animate attributeName="rx" ${extAnim(bushT, 0.5, ["0", `${CELL_SIZE / 2 + 1}`])}/>
+            <animate attributeName="ry" ${extAnim(bushT, 0.5, ["0", "4"])}/>
           </ellipse>
         `);
       }
@@ -262,13 +261,13 @@ export function generateGrowth(
         el.push(`
           <line x1="${fx}" y1="${y - height + 5}" x2="${fx}" y2="${fy + 3}"
                 stroke="#30a14e" stroke-width="1.2" opacity="0">
-            <animate attributeName="opacity" values="0;0.7" dur="0.3s" begin="cycle.begin+${ft - 0.1}s" fill="freeze"/>
+            <animate attributeName="opacity" ${extAnim(ft - 0.1, 0.3, ["0", "0.7"])}/>
           </line>
         `);
 
         el.push(`
           <g opacity="0">
-            <animate attributeName="opacity" values="0;1" dur="0.4s" begin="cycle.begin+${ft}s" fill="freeze"/>
+            <animate attributeName="opacity" ${extAnim(ft, 0.4, ["0", "1"])}/>
             ${[0, 72, 144, 216, 288].map((angle) => {
               const rad = (angle * Math.PI) / 180;
               const px = fx + Math.cos(rad) * 3.5;

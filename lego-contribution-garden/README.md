@@ -49,6 +49,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "chore: update LEGO garden"
+            git pull --rebase origin main
             git push
           fi
 ```
