@@ -1,0 +1,28 @@
+{
+  "name": "streak-stats",
+  "version": "1.0.0",
+  "description": "GitHub contribution streak stats card generator",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "generate:preview": "ts-node src/preview.ts"
+  },
+  "keywords": [
+    "github",
+    "readme",
+    "streak",
+    "stats",
+    "github-action",
+    "svg"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^25.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

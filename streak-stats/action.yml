@@ -1,0 +1,102 @@
+name: "GitHub Streak Stats"
+description: "Generate a streak stats card showing your current and longest GitHub contribution streaks"
+author: "eottabom"
+
+branding:
+  icon: "zap"
+  color: "orange"
+
+inputs:
+  github_username:
+    description: "GitHub username to fetch contributions for"
+    required: true
+  github_token:
+    description: "GitHub token (optional, for more accurate contribution counts). Works without it!"
+    required: false
+    default: ""
+  theme:
+    description: "Card theme (default, dark, radical, tokyonight, gruvbox)"
+    required: false
+    default: "default"
+  locale:
+    description: "Date locale (en, ko)"
+    required: false
+    default: "en"
+  bg_color:
+    description: "Override background color (hex)"
+    required: false
+    default: ""
+  border_color:
+    description: "Override border color (hex)"
+    required: false
+    default: ""
+  title_color:
+    description: "Override title text color (hex)"
+    required: false
+    default: ""
+  value_color:
+    description: "Override stat number color (hex)"
+    required: false
+    default: ""
+  label_color:
+    description: "Override label text color (hex)"
+    required: false
+    default: ""
+  accent_color:
+    description: "Override accent color for current streak and flame icon (hex)"
+    required: false
+    default: ""
+  date_color:
+    description: "Override date range text color (hex)"
+    required: false
+    default: ""
+  hide_title:
+    description: "Hide the title bar (true/false)"
+    required: false
+    default: "false"
+  output_dir:
+    description: "Output directory (created automatically if it doesn't exist)"
+    required: false
+    default: "output"
+  output_file:
+    description: "Output SVG file name"
+    required: false
+    default: "streak-stats.svg"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "20"
+
+    - name: Install dependencies
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npm ci
+
+    - name: Build
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npm run build
+
+    - name: Generate SVG
+      shell: bash
+      working-directory: ${{ github.workspace }}
+      env:
+        GITHUB_USERNAME: ${{ inputs.github_username }}
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+        THEME: ${{ inputs.theme }}
+        LOCALE: ${{ inputs.locale }}
+        BG_COLOR: ${{ inputs.bg_color }}
+        BORDER_COLOR: ${{ inputs.border_color }}
+        TITLE_COLOR: ${{ inputs.title_color }}
+        VALUE_COLOR: ${{ inputs.value_color }}
+        LABEL_COLOR: ${{ inputs.label_color }}
+        ACCENT_COLOR: ${{ inputs.accent_color }}
+        DATE_COLOR: ${{ inputs.date_color }}
+        HIDE_TITLE: ${{ inputs.hide_title }}
+        OUTPUT_DIR: ${{ inputs.output_dir }}
+        OUTPUT_FILE: ${{ inputs.output_file }}
+      run: node ${{ github.action_path }}/dist/index.js
