@@ -1,7 +1,7 @@
 # GitHub Streak Stats
 
 <p align="center">
-  <img src="output/streak-stats.svg" alt="GitHub Streak Stats" width="450"/>
+  <img src="output/streak-stats-preview.svg" alt="GitHub Streak Stats" width="450"/>
 </p>
 
 GitHub 연속 활동(스트릭)을 **깔끔한 카드**로 보여줍니다.

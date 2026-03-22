@@ -68,23 +68,20 @@ export function generateStreakCard(options: CardOptions): string {
   const currentRange = formatDateRange(streak.currentStreakStart, streak.currentStreakEnd, locale);
   const longestRange = formatDateRange(streak.longestStreakStart, streak.longestStreakEnd, locale);
 
-  const fontFamily = `-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif`;
+  const ff = `font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif`;
+  const titleStyle = `${ff}; font-size: 14px; font-weight: 600; fill: ${theme.title}`;
+  const valueStyle = (color: string) => `${ff}; font-size: 32px; font-weight: 700; fill: ${color}`;
+  const labelStyle = `${ff}; font-size: 12px; font-weight: 500; fill: ${theme.label}`;
+  const dateStyle = `${ff}; font-size: 10px; font-weight: 400; fill: ${theme.dateRange}`;
 
   let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}" fill="none">
-  <style>
-    .title { font: 600 14px ${fontFamily}; fill: ${theme.title}; }
-    .value { font: 700 32px ${fontFamily}; }
-    .label { font: 500 12px ${fontFamily}; fill: ${theme.label}; }
-    .date  { font: 400 10px ${fontFamily}; fill: ${theme.dateRange}; }
-  </style>
-
   <rect x="0.5" y="0.5" width="${WIDTH - 1}" height="${HEIGHT - 1}" rx="6" ry="6"
         fill="${theme.background}" stroke="${theme.border}" stroke-width="1"/>`;
 
   // Title
   if (!hideTitle) {
     svg += `
-  <text x="${WIDTH / 2}" y="26" text-anchor="middle" class="title">${escapeXml(username)}'s Streak Stats</text>
+  <text x="${WIDTH / 2}" y="26" text-anchor="middle" style="${titleStyle}">${escapeXml(username)}&apos;s Streak Stats</text>
   <line x1="20" y1="${TITLE_HEIGHT - 2}" x2="${WIDTH - 20}" y2="${TITLE_HEIGHT - 2}"
         stroke="${theme.border}" stroke-opacity="0.4"/>`;
   }
@@ -95,9 +92,9 @@ export function generateStreakCard(options: CardOptions): string {
   svg += `
   <g transform="translate(${COL_CENTER_1}, ${contentY})">
     ${flamePath(-12, -2, 0.9, theme.accent)}
-    <text x="0" y="48" text-anchor="middle" class="value" fill="${theme.accent}">${currentDays}</text>
-    <text x="0" y="70" text-anchor="middle" class="label">${labels.current}</text>
-    <text x="0" y="88" text-anchor="middle" class="date">${escapeXml(currentRange)}</text>
+    <text x="0" y="48" text-anchor="middle" style="${valueStyle(theme.accent)}">${currentDays}</text>
+    <text x="0" y="70" text-anchor="middle" style="${labelStyle}">${labels.current}</text>
+    <text x="0" y="88" text-anchor="middle" style="${dateStyle}">${escapeXml(currentRange)}</text>
   </g>`;
 
   // Vertical divider
@@ -109,9 +106,9 @@ export function generateStreakCard(options: CardOptions): string {
   svg += `
   <g transform="translate(${COL_CENTER_2}, ${contentY})">
     ${trophyPath(-12, -2, 0.9, theme.accent)}
-    <text x="0" y="48" text-anchor="middle" class="value" fill="${theme.value}">${longestDays}</text>
-    <text x="0" y="70" text-anchor="middle" class="label">${labels.longest}</text>
-    <text x="0" y="88" text-anchor="middle" class="date">${escapeXml(longestRange)}</text>
+    <text x="0" y="48" text-anchor="middle" style="${valueStyle(theme.value)}">${longestDays}</text>
+    <text x="0" y="70" text-anchor="middle" style="${labelStyle}">${labels.longest}</text>
+    <text x="0" y="88" text-anchor="middle" style="${dateStyle}">${escapeXml(longestRange)}</text>
   </g>`;
 
   svg += `

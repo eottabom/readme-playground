@@ -1,14 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="450" height="170" viewBox="0 0 450 170" fill="none">
-  <style>
-    .title { font: 600 14px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; fill: #ebdbb2; }
-    .value { font: 700 32px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
-    .label { font: 500 12px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; fill: #a89984; }
-    .date  { font: 400 10px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; fill: #928374; }
-  </style>
-
   <rect x="0.5" y="0.5" width="449" height="169" rx="6" ry="6"
         fill="#282828" stroke="#3c3836" stroke-width="1"/>
-  <text x="225" y="26" text-anchor="middle" class="title">demo-user's Streak Stats</text>
+  <text x="225" y="26" text-anchor="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 600; fill: #ebdbb2">demo-user&apos;s Streak Stats</text>
   <line x1="20" y1="38" x2="430" y2="38"
         stroke="#3c3836" stroke-opacity="0.4"/>
   <g transform="translate(112.5, 50)">
@@ -17,9 +10,9 @@
     <path d="M12 6C11 8.5 8 10.5 8 14C8 16.2 9.8 18 12 18C14.2 18 16 16.2 16 14C16 10.5 13 8.5 12 6Z" fill="#fabd2f" opacity="0.6"/>
     <path d="M12 10C11.3 11.5 10 12.8 10 14.5C10 15.6 10.9 16.5 12 16.5C13.1 16.5 14 15.6 14 14.5C14 12.8 12.7 11.5 12 10Z" fill="#FFF3E0" opacity="0.8"/>
   </g>
-    <text x="0" y="48" text-anchor="middle" class="value" fill="#fabd2f">20</text>
-    <text x="0" y="70" text-anchor="middle" class="label">Current Streak</text>
-    <text x="0" y="88" text-anchor="middle" class="date">Mar 2 - Mar 21</text>
+    <text x="0" y="48" text-anchor="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 32px; font-weight: 700; fill: #fabd2f">17</text>
+    <text x="0" y="70" text-anchor="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 500; fill: #a89984">Current Streak</text>
+    <text x="0" y="88" text-anchor="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 400; fill: #928374">Mar 5 - Mar 21</text>
   </g>
   <line x1="225" y1="52" x2="225" y2="158"
         stroke="#3c3836" stroke-opacity="0.25"/>
@@ -27,8 +20,8 @@
     <g transform="translate(-12, -2) scale(0.9)">
     <path d="M5 3H19V5H20C21.1 5 22 5.9 22 7V8C22 9.65 20.87 11.05 19.35 11.45C18.55 13.54 16.65 15.08 14.35 15.45L15 17H17V19H7V17H9L9.65 15.45C7.35 15.08 5.45 13.54 4.65 11.45C3.13 11.05 2 9.65 2 8V7C2 5.9 2.9 5 4 5H5V3ZM5 7H4V8C4 8.63 4.4 9.16 4.94 9.38C4.97 8.55 5 7.73 5 7ZM19 7V8C19 8.63 18.6 9.16 18.06 9.38C18.03 8.55 19 7.73 19 7ZM12 13C14.21 13 16 11.21 16 9V5H8V9C8 11.21 9.79 13 12 13Z" fill="#fabd2f" opacity="0.85"/>
   </g>
-    <text x="0" y="48" text-anchor="middle" class="value" fill="#ebdbb2">36</text>
-    <text x="0" y="70" text-anchor="middle" class="label">Longest Streak</text>
-    <text x="0" y="88" text-anchor="middle" class="date">Jul 26 - Aug 30</text>
+    <text x="0" y="48" text-anchor="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 32px; font-weight: 700; fill: #ebdbb2">35</text>
+    <text x="0" y="70" text-anchor="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 500; fill: #a89984">Longest Streak</text>
+    <text x="0" y="88" text-anchor="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 400; fill: #928374">Jul 27 - Aug 30</text>
   </g>
 </svg>
