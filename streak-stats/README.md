@@ -162,3 +162,4 @@ npm run generate:preview
 # 실제 유저 데이터 (토큰 불필요) → output/streak-stats.svg
 GITHUB_USERNAME=eottabom npm start
 ```
+
